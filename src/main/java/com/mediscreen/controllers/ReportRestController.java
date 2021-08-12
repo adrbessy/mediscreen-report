@@ -1,6 +1,5 @@
 package com.mediscreen.controllers;
 
-import com.mediscreen.model.Report;
 import com.mediscreen.service.ReportService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,10 +26,10 @@ public class ReportRestController {
    */
   @CrossOrigin
   @GetMapping("/assess")
-  public Report generateReport(@RequestParam int patientId) {
+  public String generateReport(@RequestParam int patientId) {
     logger.info("GET request with the endpoint 'assess'");
     reportService.doesPatientExist(patientId);
-    Report report = reportService.generateReport(patientId);
+    String report = reportService.generateReport(patientId);
     logger.info(
         "response following the Get on the endpoint 'assess' with the given patientId : {"
             + patientId + "}");

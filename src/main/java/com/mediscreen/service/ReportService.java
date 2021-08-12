@@ -1,10 +1,8 @@
 package com.mediscreen.service;
 
-import com.mediscreen.model.Report;
-
 public interface ReportService {
 
-  Report generateReport(int patientId);
+  String generateReport(int patientId);
 
   /**
    * Check if the patient id exists
