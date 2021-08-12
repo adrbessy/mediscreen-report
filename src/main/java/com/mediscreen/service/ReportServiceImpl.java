@@ -5,6 +5,9 @@ import com.mediscreen.model.Patient;
 import com.mediscreen.model.Report;
 import com.mediscreen.proxies.MicroserviceNoteProxy;
 import com.mediscreen.proxies.MicroservicePatientProxy;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ public class ReportServiceImpl implements ReportService {
     Patient patient = microservicePatientProxy.getPatient(patientId);
     List<Note> notes = microserviceNoteProxy.getNotes(patientId);
     int triggerCount = CountTrigger(notes);
+    System.out.println("triggerCount : " + triggerCount);
     int age = getPatientAge(patient.getDob());
     String sex = patient.getSex();
     Report report = createReport(triggerCount, age, sex);
@@ -41,11 +45,16 @@ public class ReportServiceImpl implements ReportService {
   }
 
   private int getPatientAge(String dob) {
-    // TODO Auto-generated method stub
-    return 0;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate birthdate = LocalDate.parse(dob, formatter);
+    LocalDate now = LocalDate.now();
+    Period period = Period.between(birthdate, now);
+    int age = period.getYears();
+    return age;
   }
 
   private int CountTrigger(List<Note> notes) {
+    int triggerCount = 0;
     List<String> triggerWords = Arrays.asList(
         "Hémoglobine A1C",
         "Microalbumine",
@@ -65,13 +74,12 @@ public class ReportServiceImpl implements ReportService {
     System.out.println("noteToStream : " + noteToStream);
 
     for (String triggerWord : triggerWords) {
-      if (noteToStream.contains(triggerWord)) {
+      if (noteToStream.toLowerCase().contains(triggerWord.toLowerCase())) {
         System.out.println("triggerWord : " + triggerWord);
+        triggerCount++;
       }
     }
-
-    return 0;
-
+    return triggerCount;
   }
 
   /**
