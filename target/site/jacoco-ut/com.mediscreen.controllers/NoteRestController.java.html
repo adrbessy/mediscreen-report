@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoteRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-note</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.controllers</a> &gt; <span class="el_source">NoteRestController.java</span></div><h1>NoteRestController.java</h1><pre class="source lang-java linenums">package com.mediscreen.controllers;
+
+import com.mediscreen.exceptions.NonexistentException;
+import com.mediscreen.model.Note;
+import com.mediscreen.service.NoteService;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+<span class="fc" id="L21">public class NoteRestController {</span>
+
+<span class="fc" id="L23">  private static final Logger logger = LogManager.getLogger(NoteRestController.class);</span>
+
+  @Autowired
+  private NoteService noteService;
+
+
+
+  /**
+   * Add a new note
+   * 
+   * @param note An object note
+   * @return true
+   */
+  @CrossOrigin
+  @PostMapping(&quot;/note&quot;)
+  public boolean createNote(@RequestBody Note note) {
+<span class="fc" id="L39">    logger.info(&quot;Post request with the endpoint 'note'&quot;);</span>
+<span class="fc" id="L40">    noteService.doesPatientExist(note.getPatientId());</span>
+<span class="fc" id="L41">    noteService.filledNote(note.getNote());</span>
+<span class="fc" id="L42">    noteService.saveNote(note);</span>
+<span class="fc" id="L43">    logger.info(</span>
+<span class="fc" id="L44">        &quot;response following the Post on the endpoint 'note' with the given note : {&quot;</span>
+<span class="fc" id="L45">            + note.toString() + &quot;}&quot;);</span>
+<span class="fc" id="L46">    return true;</span>
+  }
+
+  /**
+   * Read - Get all the notes of one user
+   * 
+   * @param patientId The id of a patient
+   * @return - A List of notes
+   */
+  @CrossOrigin
+  @GetMapping(&quot;/notes&quot;)
+  public List&lt;Note&gt; getNotes(@RequestParam int patientId) {
+<span class="fc" id="L58">    logger.info(&quot;Get request with the endpoint 'notes'&quot;);</span>
+<span class="fc" id="L59">    noteService.doesPatientExist(patientId);</span>
+<span class="fc" id="L60">    List&lt;Note&gt; noteList = noteService.getNotes(patientId);</span>
+<span class="fc" id="L61">    logger.info(</span>
+<span class="fc" id="L62">        &quot;response following the GET on the endpoint 'notes'.&quot;);</span>
+<span class="fc" id="L63">    return noteList;</span>
+  }
+
+  /**
+   * Read - Get a particular note
+   * 
+   * @param id The id of a note
+   * @return - A note
+   */
+  @CrossOrigin
+  @GetMapping(&quot;/note&quot;)
+  public Note getNote(@RequestParam String id) {
+<span class="fc" id="L75">    logger.info(&quot;Get request with the endpoint 'note'&quot;);</span>
+<span class="fc" id="L76">    noteService.noteExist(id);</span>
+<span class="fc" id="L77">    Note note = noteService.getNote(id);</span>
+<span class="fc" id="L78">    logger.info(</span>
+<span class="fc" id="L79">        &quot;response following the GET on the endpoint 'note'.&quot;);</span>
+<span class="fc" id="L80">    return note;</span>
+  }
+
+  /**
+   * Update an existing note from a given id
+   * 
+   * @param id   An id
+   * @param note A note object with modifications
+   * @return The updated note object
+   */
+  @CrossOrigin
+  @PutMapping(&quot;/note/{id}&quot;)
+  public boolean updateNote(@PathVariable(&quot;id&quot;) final String id,
+      @RequestBody Note note) {
+<span class="fc" id="L94">    logger.info(</span>
+<span class="fc" id="L95">        &quot;Put request of the endpoint 'note' with the id : {&quot; + id + &quot;}&quot;);</span>
+<span class="fc" id="L96">    noteService.noteExist(id);</span>
+<span class="fc" id="L97">    noteService.updateNote(id, note);</span>
+<span class="fc" id="L98">    logger.info(</span>
+<span class="fc" id="L99">        &quot;response following the PUT on the endpoint 'note'.&quot;);</span>
+<span class="fc" id="L100">    return true;</span>
+  }
+
+  /**
+   * Delete - Delete a note
+   * 
+   * @param id An id
+   * @return - The deleted note
+   */
+  @CrossOrigin
+  @DeleteMapping(&quot;/note&quot;)
+  public Note deleteNote(@RequestParam String id) {
+<span class="fc" id="L112">    Note note = null;</span>
+<span class="fc" id="L113">    boolean existingNote = false;</span>
+<span class="fc" id="L114">    logger.info(&quot;Delete request with the endpoint 'note'&quot;);</span>
+<span class="fc" id="L115">    existingNote = noteService.noteExist(id);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">    if (existingNote) {</span>
+<span class="fc" id="L117">      note = noteService.deleteNote(id);</span>
+<span class="fc" id="L118">      logger.info(</span>
+<span class="fc" id="L119">          &quot;response following the DELETE on the endpoint 'note'.&quot;);</span>
+    }
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">    if (!existingNote) {</span>
+<span class="nc" id="L122">      logger.error(&quot;The note with the id &quot; + id + &quot; doesn't exist.&quot;);</span>
+<span class="nc" id="L123">      throw new NonexistentException(</span>
+<span class="nc" id="L124">          &quot;The note with the id &quot; + id + &quot; doesn't exist.&quot;);</span>
+    }
+<span class="fc" id="L126">    return note;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

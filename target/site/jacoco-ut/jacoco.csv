@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+mediscreen-note,com.mediscreen.controllers,NoteRestController,24,130,2,2,3,39,2,7,0,7
+mediscreen-note,com.mediscreen.service,NoteServiceImpl,32,128,5,5,4,35,5,10,0,10
+mediscreen-note,com.mediscreen.model,Note,0,31,0,0,0,3,0,9,0,9

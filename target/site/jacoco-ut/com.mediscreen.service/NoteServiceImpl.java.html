@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoteServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-note</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.service</a> &gt; <span class="el_source">NoteServiceImpl.java</span></div><h1>NoteServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.service;
+
+import com.mediscreen.exceptions.IsForbiddenException;
+import com.mediscreen.exceptions.NonexistentException;
+import com.mediscreen.model.Note;
+import com.mediscreen.proxies.MicroservicePatientProxy;
+import com.mediscreen.repositories.NoteRepository;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+<span class="fc" id="L19">public class NoteServiceImpl implements NoteService {</span>
+
+<span class="fc" id="L21">  private static final Logger logger = LogManager.getLogger(NoteServiceImpl.class);</span>
+
+  @Autowired
+  private NoteRepository noteRepository;
+
+  @Autowired
+  private MicroservicePatientProxy microservicePatientProxy;
+
+  /**
+   * Get a note from an id
+   * 
+   * @param id The id of the note
+   * @return The note
+   */
+  @Override
+  public Note getNote(String id) {
+<span class="fc" id="L37">    logger.debug(&quot;in the method getNote in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L38">    Optional&lt;Note&gt; note = noteRepository.findById(id);</span>
+<span class="fc" id="L39">    return note.get();</span>
+  }
+
+  /**
+   * Check if the patient id exists
+   * 
+   * @param patientId patient id
+   * @return true if it exists
+   */
+  @Override
+  public boolean doesPatientExist(Integer patientId) {
+<span class="fc" id="L50">    logger.debug(&quot;in the method doesPatientExist in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L51">    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);</span>
+<span class="fc" id="L52">    return patientExists;</span>
+  }
+
+  /**
+   * Save a note
+   * 
+   * @param note A note to save
+   * @return the saved note
+   */
+  @Override
+  public Note saveNote(Note note) {
+<span class="fc" id="L63">    logger.debug(&quot;in the method saveNote in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L64">    note.setDate(LocalDateTime.now(ZoneId.of(&quot;Europe/Paris&quot;)));</span>
+<span class="fc" id="L65">    Note savedNote = noteRepository.insert(note);</span>
+<span class="fc" id="L66">    return savedNote;</span>
+  }
+
+  /**
+   * Get the notes of one patient
+   * 
+   * @param patientId the id of a patient
+   * @return the list of his notes
+   */
+  @Override
+  public List&lt;Note&gt; getNotes(int patientId) {
+<span class="fc" id="L77">    logger.debug(&quot;in the method getNotes in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L78">    List&lt;Note&gt; noteList = noteRepository.findByPatientId(patientId);</span>
+<span class="fc" id="L79">    return noteList;</span>
+  }
+
+  /**
+   * Check if the given note id exists.
+   * 
+   * @param id The note id
+   * @return true if the id exists, otherwise returns false
+   */
+  @Override
+  public boolean noteExist(String id) {
+<span class="fc" id="L90">    logger.debug(&quot;in the method noteExist in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L91">    boolean noteExist = false;</span>
+<span class="fc" id="L92">    noteExist = noteRepository.existsById(id);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">    if (!noteExist) {</span>
+<span class="nc" id="L94">      logger.error(&quot;The note with the id &quot; + id + &quot; doesn't exist.&quot;);</span>
+<span class="nc" id="L95">      throw new NonexistentException(&quot;The note with the id &quot; + id + &quot; doesn't exist.&quot;);</span>
+    }
+<span class="fc" id="L97">    return noteExist;</span>
+  }
+
+  /**
+   * Check if a note variable is empty or null
+   * 
+   * @param note The content of a note
+   * @return true if the note is not null or empty
+   */
+  @Override
+  public boolean filledNote(String note) {
+<span class="fc" id="L108">    logger.debug(&quot;in the method filledNote in the class NoteServiceImpl&quot;);</span>
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">    if (note == null || note.length() == 0) {</span>
+<span class="nc" id="L110">      logger.error(&quot;The note content is empty or null.&quot;);</span>
+<span class="nc" id="L111">      throw new IsForbiddenException(&quot;The note content is empty or null.&quot;);</span>
+    } else {
+<span class="fc" id="L113">      return true;</span>
+    }
+  }
+
+  /**
+   * Update a note
+   * 
+   * @param id   The id of the note to update
+   * @param note A note to update
+   */
+  @Override
+  public void updateNote(String id, Note note) {
+<span class="fc" id="L125">    logger.debug(&quot;in the method updateNote in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L126">    boolean filledNote = filledNote(note.getNote());</span>
+<span class="fc" id="L127">    Optional&lt;Note&gt; noteToUpdate = noteRepository.findById(id);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">    if (filledNote) {</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">      if (noteToUpdate.isPresent()) {</span>
+<span class="fc" id="L130">        noteToUpdate.get().setNote(note.getNote());</span>
+      }
+    }
+<span class="fc" id="L133">    noteRepository.save(noteToUpdate.get());</span>
+<span class="fc" id="L134">  }</span>
+
+  /**
+   * Delete a note
+   * 
+   * @param note A note
+   * @return the deleted note
+   */
+  @Override
+  @Transactional
+  public Note deleteNote(String id) {
+<span class="fc" id="L145">    logger.debug(&quot;in the method deleteNote in the class NoteServiceImpl&quot;);</span>
+<span class="fc" id="L146">    Optional&lt;Note&gt; note = noteRepository.findById(id);</span>
+<span class="fc" id="L147">    noteRepository.deleteById(id);</span>
+<span class="fc" id="L148">    return note.get();</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

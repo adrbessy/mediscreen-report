@@ -1,0 +1,12 @@
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/model/Note.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/exceptions/IsForbiddenException.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/exceptions/CustomErrorDecoder.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/service/NoteService.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/configuration/FeignExceptionConfig.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/proxies/MicroservicePatientProxy.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/controllers/NoteRestController.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/exceptions/NonexistentException.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/configuration/WebSecurityConfig.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/MediscreenNoteApplication.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/service/NoteServiceImpl.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/main/java/com/mediscreen/repositories/NoteRepository.java
