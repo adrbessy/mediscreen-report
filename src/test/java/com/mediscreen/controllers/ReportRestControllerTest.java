@@ -1,10 +1,9 @@
 package com.mediscreen.controllers;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import com.mediscreen.model.Note;
+import com.mediscreen.service.PatientService;
 import com.mediscreen.service.ReportService;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,20 +21,19 @@ public class ReportRestControllerTest {
 
   @MockBean
   private ReportService reportServiceMock;
+  @MockBean
+  private PatientService patientServiceMock;
 
   @Test
-  public void testGetNotes() throws Exception {
-    Note note = new Note();
-    note.setPatientId(1);
-    note.setNote("Plant diet is necessary!");
-    List<Note> noteList = new ArrayList<>();
-    noteList.add(note);
-    /*
-     * when(noteServiceMock.getNotes(1)).thenReturn(noteList);
-     * when(noteServiceMock.doesPatientExist(1)).thenReturn(true);
-     */
+  public void testGenerateReport() throws Exception {
+    int patientId = 1;
+    String report = "Patient: Adrien Bessy (age 22) diabetes assessment is: In Danger";
+
+    when(patientServiceMock.doesPatientExist(patientId)).thenReturn(true);
+    when(reportServiceMock.generateReport(patientId)).thenReturn(report);
+
     mockMvc
-        .perform(MockMvcRequestBuilders.get("/notes?patientId=1"))
+        .perform(MockMvcRequestBuilders.get("/assess?patientId=1"))
         .andExpect(status().isOk());
   }
 
