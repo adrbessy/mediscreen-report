@@ -14,16 +14,25 @@ public class TriggerServiceImpl implements TriggerService {
     int triggerCount = 0;
     List<String> triggerWords = Arrays.asList(
         "Hémoglobine A1C",
+        "Hemoglobin A1C",
         "Microalbumine",
         "Taille",
+        "Height",
         "Poids",
+        "Weight",
         "Fumeur",
+        "Smoker",
         "Anormal",
+        "Abnormal",
         "Cholestérol",
+        "Cholesterol",
         "Vertige",
+        "Dizziness",
         "Rechute",
         "Réaction",
-        "Anticorps");
+        "reaction",
+        "Anticorps",
+        "Antibodies");
     String noteToStream = notes.stream()
         .map(Note::getNote)
         .map(String::trim)

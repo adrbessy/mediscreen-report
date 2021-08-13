@@ -1,12 +1,7 @@
-com/mediscreen/MediscreenNoteApplication.class
 com/mediscreen/configuration/WebSecurityConfig.class
 com/mediscreen/exceptions/CustomErrorDecoder.class
-com/mediscreen/service/NoteServiceImpl.class
 com/mediscreen/proxies/MicroservicePatientProxy.class
 com/mediscreen/model/Note.class
 com/mediscreen/exceptions/IsForbiddenException.class
 com/mediscreen/configuration/FeignExceptionConfig.class
-com/mediscreen/controllers/NoteRestController.class
-com/mediscreen/service/NoteService.class
-com/mediscreen/repositories/NoteRepository.class
 com/mediscreen/exceptions/NonexistentException.class

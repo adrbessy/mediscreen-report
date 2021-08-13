@@ -1,3 +1,5 @@
-/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/test/java/com/mediscreen/service/NoteServiceImplTest.java
-/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/test/java/com/mediscreen/MediscreenNoteApplicationTests.java
-/home/adrien/Documents/OCR/java/projet9/mediscreen-note/src/test/java/com/mediscreen/controllers/NoteRestControllerTest.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-report/src/test/java/com/mediscreen/MediscreenNoteApplicationTests.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-report/src/test/java/com/mediscreen/service/ReportServiceImplTest.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-report/src/test/java/com/mediscreen/controllers/ReportRestControllerTest.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-report/src/test/java/com/mediscreen/service/PatientServiceImplTest.java
+/home/adrien/Documents/OCR/java/projet9/mediscreen-report/src/test/java/com/mediscreen/service/TriggerServiceImplTest.java

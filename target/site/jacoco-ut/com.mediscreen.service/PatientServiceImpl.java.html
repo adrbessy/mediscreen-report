@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-report</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.service</a> &gt; <span class="el_source">PatientServiceImpl.java</span></div><h1>PatientServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.service;
+
+import com.mediscreen.proxies.MicroservicePatientProxy;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L13">public class PatientServiceImpl implements PatientService {</span>
+
+<span class="fc" id="L15">  private static final Logger logger = LogManager.getLogger(PatientServiceImpl.class);</span>
+
+  @Autowired
+  private MicroservicePatientProxy microservicePatientProxy;
+
+  /**
+   * Check if the patient id exists
+   * 
+   * @param patientId patient id
+   * @return true if it exists
+   */
+  @Override
+  public boolean doesPatientExist(Integer patientId) {
+<span class="fc" id="L28">    logger.debug(&quot;in the method doesPatientExist in the class PatientServiceImpl&quot;);</span>
+<span class="fc" id="L29">    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);</span>
+<span class="fc" id="L30">    return patientExists;</span>
+  }
+
+  @Override
+  public int getPatientAge(String dob, LocalDate currentDate) {
+<span class="fc" id="L35">    logger.debug(&quot;in the method getPatientAge in the class PatientServiceImpl&quot;);</span>
+<span class="fc" id="L36">    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="fc" id="L37">    LocalDate birthdate = LocalDate.parse(dob, formatter);</span>
+<span class="fc" id="L38">    Period period = Period.between(birthdate, currentDate);</span>
+<span class="fc" id="L39">    int age = period.getYears();</span>
+<span class="fc" id="L40">    return age;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -176,7 +176,8 @@
                     <excludes>
                         <exclude>**/exceptions/*.class</exclude>
                         <exclude>**/configuration/*.class</exclude>
-                        <exclude>**/MediscreenNoteApplication.class</exclude>
+                        <exclude>**/model/*.class</exclude>
+                        <exclude>**/MediscreenReportApplication.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-report</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.service</a> &gt; <span class="el_source">ReportServiceImpl.java</span></div><h1>ReportServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.service;
+
+import com.mediscreen.model.Note;
+import com.mediscreen.model.Patient;
+import com.mediscreen.proxies.MicroserviceNoteProxy;
+import com.mediscreen.proxies.MicroservicePatientProxy;
+import java.time.LocalDate;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L15">public class ReportServiceImpl implements ReportService {</span>
+
+<span class="fc" id="L17">  private static final Logger logger = LogManager.getLogger(ReportServiceImpl.class);</span>
+
+  @Autowired
+  private MicroservicePatientProxy microservicePatientProxy;
+
+  @Autowired
+  private MicroserviceNoteProxy microserviceNoteProxy;
+
+  @Autowired
+  private TriggerService triggerService;
+
+  @Autowired
+  private PatientService patientService;
+
+  @Override
+  public String generateReport(int patientId) {
+<span class="fc" id="L33">    logger.debug(&quot;in the method generateReport in the class ReportServiceImpl&quot;);</span>
+<span class="fc" id="L34">    Patient patient = microservicePatientProxy.getPatient(patientId);</span>
+<span class="fc" id="L35">    List&lt;Note&gt; notes = microserviceNoteProxy.getNotes(patientId);</span>
+<span class="fc" id="L36">    int triggerCount = triggerService.countTrigger(notes);</span>
+<span class="fc" id="L37">    System.out.println(&quot;triggerCount : &quot; + triggerCount);</span>
+<span class="fc" id="L38">    int age = patientService.getPatientAge(patient.getDob(), LocalDate.now());</span>
+<span class="fc" id="L39">    String sex = patient.getSex();</span>
+<span class="fc" id="L40">    String report = createReport(triggerCount, age, sex, patient.getGiven(), patient.getFamily());</span>
+<span class="fc" id="L41">    return report;</span>
+  }
+
+  private String createReport(int triggerCount, int age, String sex, String given, String family) {
+<span class="fc" id="L45">    logger.debug(&quot;in the method createReport in the class ReportServiceImpl&quot;);</span>
+<span class="fc" id="L46">    String riskLevel = &quot;None&quot;;</span>
+
+<span class="fc bfc" id="L48" title="All 2 branches covered.">    if (age &lt; 30) {</span>
+
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">      if (sex.equals(&quot;M&quot;)) {</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (triggerCount &gt;= 3) {</span>
+<span class="fc" id="L52">          riskLevel = &quot;In Danger&quot;;</span>
+        }
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (triggerCount &gt;= 5) {</span>
+<span class="fc" id="L55">          riskLevel = &quot;Early onset&quot;;</span>
+        }
+      }
+
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">      if (sex.equals(&quot;F&quot;)) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (triggerCount &gt;= 4) {</span>
+<span class="nc" id="L61">          riskLevel = &quot;In Danger&quot;;</span>
+        }
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (triggerCount &gt;= 7) {</span>
+<span class="nc" id="L64">          riskLevel = &quot;Early onset&quot;;</span>
+        }
+      }
+
+    }
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    if (age &gt;= 30) {</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">      if (triggerCount &gt;= 2) {</span>
+<span class="fc" id="L72">        riskLevel = &quot;Borderline&quot;;</span>
+      }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">      if (triggerCount &gt;= 6) {</span>
+<span class="fc" id="L75">        riskLevel = &quot;In Danger&quot;;</span>
+      }
+<span class="fc bfc" id="L77" title="All 2 branches covered.">      if (triggerCount &gt;= 8) {</span>
+<span class="fc" id="L78">        riskLevel = &quot;Early onset&quot;;</span>
+      }
+    }
+
+<span class="fc" id="L82">    return &quot;Patient: &quot; + given + &quot; &quot; + family + &quot; (age &quot; + age + &quot;) diabetes assessment is: &quot; + riskLevel;</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
