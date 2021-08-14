@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.mediscreen"},{"l":"com.mediscreen.configuration"},{"l":"com.mediscreen.controllers"},{"l":"com.mediscreen.exceptions"},{"l":"com.mediscreen.model"},{"l":"com.mediscreen.proxies"},{"l":"com.mediscreen.service"}]

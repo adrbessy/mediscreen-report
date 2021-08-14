@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TriggerServiceImpl implements TriggerService {
 
+  /**
+   * Count the trigger number in all notes
+   * 
+   * @param notes the notes of a patient
+   * @return the number of triggers
+   */
   @Override
   public int countTrigger(List<Note> notes) {
     int triggerCount = 0;
@@ -29,6 +35,7 @@ public class TriggerServiceImpl implements TriggerService {
         "Vertige",
         "Dizziness",
         "Rechute",
+        "relapse",
         "Réaction",
         "reaction",
         "Anticorps",

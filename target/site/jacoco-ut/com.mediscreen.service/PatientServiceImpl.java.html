@@ -30,14 +30,21 @@ import org.springframework.stereotype.Service;
 <span class="fc" id="L30">    return patientExists;</span>
   }
 
+  /**
+   * Get the patient age
+   * 
+   * @param dob         the date of birth
+   * @param currentDate the current date
+   * @return the age of the patient
+   */
   @Override
-  public int getPatientAge(String dob, LocalDate currentDate) {
-<span class="fc" id="L35">    logger.debug(&quot;in the method getPatientAge in the class PatientServiceImpl&quot;);</span>
-<span class="fc" id="L36">    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
-<span class="fc" id="L37">    LocalDate birthdate = LocalDate.parse(dob, formatter);</span>
-<span class="fc" id="L38">    Period period = Period.between(birthdate, currentDate);</span>
-<span class="fc" id="L39">    int age = period.getYears();</span>
-<span class="fc" id="L40">    return age;</span>
+  public int getPatientAge(String dob) {
+<span class="nc" id="L42">    logger.debug(&quot;in the method getPatientAge in the class PatientServiceImpl&quot;);</span>
+<span class="nc" id="L43">    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L44">    LocalDate birthdate = LocalDate.parse(dob, formatter);</span>
+<span class="nc" id="L45">    Period period = Period.between(birthdate, LocalDate.now());</span>
+<span class="nc" id="L46">    int age = period.getYears();</span>
+<span class="nc" id="L47">    return age;</span>
   }
 
 }

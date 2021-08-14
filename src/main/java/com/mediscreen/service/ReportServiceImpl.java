@@ -4,7 +4,6 @@ import com.mediscreen.model.Note;
 import com.mediscreen.model.Patient;
 import com.mediscreen.proxies.MicroserviceNoteProxy;
 import com.mediscreen.proxies.MicroservicePatientProxy;
-import java.time.LocalDate;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +27,12 @@ public class ReportServiceImpl implements ReportService {
   @Autowired
   private PatientService patientService;
 
+  /**
+   * Get the diabete report
+   * 
+   * @param patientId the patient id
+   * @return the diabete report
+   */
   @Override
   public String generateReport(int patientId) {
     logger.debug("in the method generateReport in the class ReportServiceImpl");
@@ -35,12 +40,22 @@ public class ReportServiceImpl implements ReportService {
     List<Note> notes = microserviceNoteProxy.getNotes(patientId);
     int triggerCount = triggerService.countTrigger(notes);
     System.out.println("triggerCount : " + triggerCount);
-    int age = patientService.getPatientAge(patient.getDob(), LocalDate.now());
+    int age = patientService.getPatientAge(patient.getDob());
     String sex = patient.getSex();
     String report = createReport(triggerCount, age, sex, patient.getGiven(), patient.getFamily());
     return report;
   }
 
+  /**
+   * Create the diabete report
+   * 
+   * @param triggerCount the trigger number
+   * @param age          the patient age
+   * @param sex          the patient sex
+   * @param given        the patient first name
+   * @param family       the patient family name
+   * @return the diabete report
+   */
   private String createReport(int triggerCount, int age, String sex, String given, String family) {
     logger.debug("in the method createReport in the class ReportServiceImpl");
     String riskLevel = "None";

@@ -30,12 +30,18 @@ public class PatientServiceImpl implements PatientService {
     return patientExists;
   }
 
+  /**
+   * Get the patient age
+   * 
+   * @param dob the date of birth
+   * @return the age of the patient
+   */
   @Override
-  public int getPatientAge(String dob, LocalDate currentDate) {
+  public int getPatientAge(String dob) {
     logger.debug("in the method getPatientAge in the class PatientServiceImpl");
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate birthdate = LocalDate.parse(dob, formatter);
-    Period period = Period.between(birthdate, currentDate);
+    Period period = Period.between(birthdate, LocalDate.now());
     int age = period.getYears();
     return age;
   }

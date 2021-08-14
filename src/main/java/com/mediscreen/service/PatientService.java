@@ -1,11 +1,21 @@
 package com.mediscreen.service;
 
-import java.time.LocalDate;
-
 public interface PatientService {
 
+  /**
+   * Check if the patient id exists
+   * 
+   * @param patientId patient id
+   * @return true if it exists
+   */
   boolean doesPatientExist(Integer patientId);
 
-  int getPatientAge(String dob, LocalDate currentDate);
+  /**
+   * Get the patient age
+   * 
+   * @param dob the date of birth
+   * @return the age of the patient
+   */
+  int getPatientAge(String dob);
 
 }

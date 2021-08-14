@@ -1,0 +1,7 @@
+com.mediscreen
+com.mediscreen.configuration
+com.mediscreen.controllers
+com.mediscreen.exceptions
+com.mediscreen.model
+com.mediscreen.proxies
+com.mediscreen.service
