@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-mediscreen-report,com.mediscreen.controllers,ReportRestController,0,34,0,0,0,9,0,3,0,3
-mediscreen-report,com.mediscreen.service,PatientServiceImpl,19,17,0,0,6,5,1,3,1,3
+mediscreen-report,com.mediscreen.controllers,ReportRestController,0,62,0,0,0,16,0,4,0,4
+mediscreen-report,com.mediscreen.service,PatientServiceImpl,19,27,0,0,6,8,1,4,1,4
 mediscreen-report,com.mediscreen.service,TriggerServiceImpl,0,142,0,4,0,34,0,4,0,2
 mediscreen-report,com.mediscreen.service,ReportServiceImpl,0,130,3,19,0,32,3,12,0,4

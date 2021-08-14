@@ -12,6 +12,10 @@ public class CustomErrorDecoder implements ErrorDecoder {
     if (response.status() == 404) {
       return new NonexistentException("The patient doesn't exist.");
     }
+    if (response.status() == 403) {
+      return new NonexistentException(
+          "There are several patients with this family name, try the request with his patient id: curl http://.../assess?patientId={id}");
+    }
     return defaultErrorDecoder.decode(methodKey, response);
   }
 

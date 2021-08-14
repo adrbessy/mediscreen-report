@@ -2,6 +2,7 @@ package com.mediscreen.controllers;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.mediscreen.model.Patient;
 import com.mediscreen.service.PatientService;
 import com.mediscreen.service.ReportService;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,20 @@ public class ReportRestControllerTest {
 
     mockMvc
         .perform(MockMvcRequestBuilders.get("/assess?patientId=1"))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void testGenerateReportFromFamilyName() throws Exception {
+    String report = "Patient: Adrien Bessy (age 22) diabetes assessment is: In Danger";
+    Patient patient = new Patient();
+    patient.setId(1);
+
+    when(patientServiceMock.getPatient("Bessy")).thenReturn(patient);
+    when(reportServiceMock.generateReport(patient.getId())).thenReturn(report);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/assess/Bessy"))
         .andExpect(status().isOk());
   }
 

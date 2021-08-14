@@ -14,4 +14,7 @@ public interface MicroservicePatientProxy {
   @GetMapping("/patient")
   Patient getPatient(@RequestParam("id") Integer id);
 
+  @GetMapping("/patientByFamilyName")
+  Patient getPatient(@RequestParam("familyName") String familyName);
+
 }

@@ -1,5 +1,7 @@
 package com.mediscreen.service;
 
+import com.mediscreen.model.Patient;
+
 public interface PatientService {
 
   /**
@@ -17,5 +19,13 @@ public interface PatientService {
    * @return the age of the patient
    */
   int getPatientAge(String dob);
+
+  /**
+   * Get patient
+   * 
+   * @param familyName patient family name
+   * @return the patient
+   */
+  Patient getPatient(String familyName);
 
 }

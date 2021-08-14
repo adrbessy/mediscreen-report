@@ -27,58 +27,74 @@ import org.springframework.stereotype.Service;
   @Autowired
   private PatientService patientService;
 
+  /**
+   * Get the diabete report
+   * 
+   * @param patientId the patient id
+   * @return the diabete report
+   */
   @Override
   public String generateReport(int patientId) {
-<span class="fc" id="L32">    logger.debug(&quot;in the method generateReport in the class ReportServiceImpl&quot;);</span>
-<span class="fc" id="L33">    Patient patient = microservicePatientProxy.getPatient(patientId);</span>
-<span class="fc" id="L34">    List&lt;Note&gt; notes = microserviceNoteProxy.getNotes(patientId);</span>
-<span class="fc" id="L35">    int triggerCount = triggerService.countTrigger(notes);</span>
-<span class="fc" id="L36">    System.out.println(&quot;triggerCount : &quot; + triggerCount);</span>
-<span class="fc" id="L37">    int age = patientService.getPatientAge(patient.getDob());</span>
-<span class="fc" id="L38">    String sex = patient.getSex();</span>
-<span class="fc" id="L39">    String report = createReport(triggerCount, age, sex, patient.getGiven(), patient.getFamily());</span>
-<span class="fc" id="L40">    return report;</span>
+<span class="fc" id="L38">    logger.debug(&quot;in the method generateReport in the class ReportServiceImpl&quot;);</span>
+<span class="fc" id="L39">    Patient patient = microservicePatientProxy.getPatient(patientId);</span>
+<span class="fc" id="L40">    List&lt;Note&gt; notes = microserviceNoteProxy.getNotes(patientId);</span>
+<span class="fc" id="L41">    int triggerCount = triggerService.countTrigger(notes);</span>
+<span class="fc" id="L42">    System.out.println(&quot;triggerCount : &quot; + triggerCount);</span>
+<span class="fc" id="L43">    int age = patientService.getPatientAge(patient.getDob());</span>
+<span class="fc" id="L44">    String sex = patient.getSex();</span>
+<span class="fc" id="L45">    String report = createReport(triggerCount, age, sex, patient.getGiven(), patient.getFamily());</span>
+<span class="fc" id="L46">    return report;</span>
   }
 
+  /**
+   * Create the diabete report
+   * 
+   * @param triggerCount the trigger number
+   * @param age          the patient age
+   * @param sex          the patient sex
+   * @param given        the patient first name
+   * @param family       the patient family name
+   * @return the diabete report
+   */
   private String createReport(int triggerCount, int age, String sex, String given, String family) {
-<span class="fc" id="L44">    logger.debug(&quot;in the method createReport in the class ReportServiceImpl&quot;);</span>
-<span class="fc" id="L45">    String riskLevel = &quot;None&quot;;</span>
+<span class="fc" id="L60">    logger.debug(&quot;in the method createReport in the class ReportServiceImpl&quot;);</span>
+<span class="fc" id="L61">    String riskLevel = &quot;None&quot;;</span>
 
-<span class="fc bfc" id="L47" title="All 2 branches covered.">    if (age &lt; 30) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    if (age &lt; 30) {</span>
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">      if (sex.equals(&quot;M&quot;)) {</span>
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (triggerCount &gt;= 3) {</span>
-<span class="fc" id="L51">          riskLevel = &quot;In Danger&quot;;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">      if (sex.equals(&quot;M&quot;)) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (triggerCount &gt;= 3) {</span>
+<span class="fc" id="L67">          riskLevel = &quot;In Danger&quot;;</span>
         }
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (triggerCount &gt;= 5) {</span>
-<span class="fc" id="L54">          riskLevel = &quot;Early onset&quot;;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (triggerCount &gt;= 5) {</span>
+<span class="fc" id="L70">          riskLevel = &quot;Early onset&quot;;</span>
         }
       }
 
-<span class="fc bfc" id="L58" title="All 2 branches covered.">      if (sex.equals(&quot;F&quot;)) {</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (triggerCount &gt;= 4) {</span>
-<span class="fc" id="L60">          riskLevel = &quot;In Danger&quot;;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">      if (sex.equals(&quot;F&quot;)) {</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (triggerCount &gt;= 4) {</span>
+<span class="fc" id="L76">          riskLevel = &quot;In Danger&quot;;</span>
         }
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (triggerCount &gt;= 7) {</span>
-<span class="fc" id="L63">          riskLevel = &quot;Early onset&quot;;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (triggerCount &gt;= 7) {</span>
+<span class="fc" id="L79">          riskLevel = &quot;Early onset&quot;;</span>
         }
       }
 
     }
 
-<span class="fc bfc" id="L69" title="All 2 branches covered.">    if (age &gt;= 30) {</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">      if (triggerCount &gt;= 2) {</span>
-<span class="fc" id="L71">        riskLevel = &quot;Borderline&quot;;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">    if (age &gt;= 30) {</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">      if (triggerCount &gt;= 2) {</span>
+<span class="fc" id="L87">        riskLevel = &quot;Borderline&quot;;</span>
       }
-<span class="fc bfc" id="L73" title="All 2 branches covered.">      if (triggerCount &gt;= 6) {</span>
-<span class="fc" id="L74">        riskLevel = &quot;In Danger&quot;;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">      if (triggerCount &gt;= 6) {</span>
+<span class="fc" id="L90">        riskLevel = &quot;In Danger&quot;;</span>
       }
-<span class="fc bfc" id="L76" title="All 2 branches covered.">      if (triggerCount &gt;= 8) {</span>
-<span class="fc" id="L77">        riskLevel = &quot;Early onset&quot;;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">      if (triggerCount &gt;= 8) {</span>
+<span class="fc" id="L93">        riskLevel = &quot;Early onset&quot;;</span>
       }
     }
 
-<span class="fc" id="L81">    return &quot;Patient: &quot; + given + &quot; &quot; + family + &quot; (age &quot; + age + &quot;) diabetes assessment is: &quot; + riskLevel;</span>
+<span class="fc" id="L97">    return &quot;Patient: &quot; + given + &quot; &quot; + family + &quot; (age &quot; + age + &quot;) diabetes assessment is: &quot; + riskLevel;</span>
   }
 
 

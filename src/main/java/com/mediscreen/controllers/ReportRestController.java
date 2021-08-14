@@ -1,5 +1,6 @@
 package com.mediscreen.controllers;
 
+import com.mediscreen.model.Patient;
 import com.mediscreen.service.PatientService;
 import com.mediscreen.service.ReportService;
 import org.apache.logging.log4j.LogManager;
@@ -7,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,5 +40,24 @@ public class ReportRestController {
             + patientId + "}");
     return report;
   }
+
+  /**
+   * Generate a report
+   * 
+   * @param patientId A patient id
+   * @return report
+   */
+  @CrossOrigin
+  @GetMapping("/assess/{familyName}")
+  public String generateReportFromFamily(@PathVariable("familyName") final String familyName) {
+    logger.info("GET request with the endpoint 'assess'");
+    Patient patient = patientService.getPatient(familyName);
+    String report = reportService.generateReport(patient.getId());
+    logger.info(
+        "response following the Get on the endpoint 'assess' with the given family name : {"
+            + familyName + "}");
+    return report;
+  }
+
 
 }

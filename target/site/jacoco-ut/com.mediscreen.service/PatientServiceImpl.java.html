@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-report</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.service</a> &gt; <span class="el_source">PatientServiceImpl.java</span></div><h1>PatientServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.service;
 
+import com.mediscreen.model.Patient;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-<span class="fc" id="L13">public class PatientServiceImpl implements PatientService {</span>
+<span class="fc" id="L14">public class PatientServiceImpl implements PatientService {</span>
 
-<span class="fc" id="L15">  private static final Logger logger = LogManager.getLogger(PatientServiceImpl.class);</span>
+<span class="fc" id="L16">  private static final Logger logger = LogManager.getLogger(PatientServiceImpl.class);</span>
 
   @Autowired
   private MicroservicePatientProxy microservicePatientProxy;
@@ -25,26 +26,38 @@ import org.springframework.stereotype.Service;
    */
   @Override
   public boolean doesPatientExist(Integer patientId) {
-<span class="fc" id="L28">    logger.debug(&quot;in the method doesPatientExist in the class PatientServiceImpl&quot;);</span>
-<span class="fc" id="L29">    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);</span>
-<span class="fc" id="L30">    return patientExists;</span>
+<span class="fc" id="L29">    logger.debug(&quot;in the method doesPatientExist in the class PatientServiceImpl&quot;);</span>
+<span class="fc" id="L30">    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);</span>
+<span class="fc" id="L31">    return patientExists;</span>
+  }
+
+  /**
+   * Get patient
+   * 
+   * @param familyName patient family name
+   * @return the patient
+   */
+  @Override
+  public Patient getPatient(String familyName) {
+<span class="fc" id="L42">    logger.debug(&quot;in the method getPatient in the class PatientServiceImpl&quot;);</span>
+<span class="fc" id="L43">    Patient patient = microservicePatientProxy.getPatient(familyName);</span>
+<span class="fc" id="L44">    return patient;</span>
   }
 
   /**
    * Get the patient age
    * 
-   * @param dob         the date of birth
-   * @param currentDate the current date
+   * @param dob the date of birth
    * @return the age of the patient
    */
   @Override
   public int getPatientAge(String dob) {
-<span class="nc" id="L42">    logger.debug(&quot;in the method getPatientAge in the class PatientServiceImpl&quot;);</span>
-<span class="nc" id="L43">    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
-<span class="nc" id="L44">    LocalDate birthdate = LocalDate.parse(dob, formatter);</span>
-<span class="nc" id="L45">    Period period = Period.between(birthdate, LocalDate.now());</span>
-<span class="nc" id="L46">    int age = period.getYears();</span>
-<span class="nc" id="L47">    return age;</span>
+<span class="nc" id="L55">    logger.debug(&quot;in the method getPatientAge in the class PatientServiceImpl&quot;);</span>
+<span class="nc" id="L56">    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L57">    LocalDate birthdate = LocalDate.parse(dob, formatter);</span>
+<span class="nc" id="L58">    Period period = Period.between(birthdate, LocalDate.now());</span>
+<span class="nc" id="L59">    int age = period.getYears();</span>
+<span class="nc" id="L60">    return age;</span>
   }
 
 }

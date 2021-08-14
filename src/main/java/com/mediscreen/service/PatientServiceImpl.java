@@ -1,5 +1,6 @@
 package com.mediscreen.service;
 
+import com.mediscreen.model.Patient;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import java.time.LocalDate;
 import java.time.Period;
@@ -28,6 +29,19 @@ public class PatientServiceImpl implements PatientService {
     logger.debug("in the method doesPatientExist in the class PatientServiceImpl");
     boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
     return patientExists;
+  }
+
+  /**
+   * Get patient
+   * 
+   * @param familyName patient family name
+   * @return the patient
+   */
+  @Override
+  public Patient getPatient(String familyName) {
+    logger.debug("in the method getPatient in the class PatientServiceImpl");
+    Patient patient = microservicePatientProxy.getPatient(familyName);
+    return patient;
   }
 
   /**

@@ -1,7 +1,9 @@
 package com.mediscreen.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import com.mediscreen.model.Patient;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,18 @@ public class PatientServiceImplTest {
     boolean result = patientService.doesPatientExist(patientId);
     assertTrue(result);
   }
+
+
+  @Test
+  public void testGetPatient() {
+    Patient patient = new Patient();
+    when(microservicePatientProxyMock.getPatient("Bessy")).thenReturn(patient);
+
+    Patient result = patientService.getPatient("Bessy");
+    assertThat(result).isEqualTo(patient);
+  }
+
+
   /*
    * @Test public void testGetPatientAge() { int result =
    * patientService.getPatientAge("1988-06-16", LocalDate.of(2021, 8, 13));
