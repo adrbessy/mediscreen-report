@@ -1,7 +1,6 @@
 package com.mediscreen.service;
 
 import com.mediscreen.model.Note;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -18,40 +17,39 @@ public class TriggerServiceImpl implements TriggerService {
   @Override
   public int countTrigger(List<Note> notes) {
     int triggerCount = 0;
-    List<String> triggerWords = Arrays.asList(
-        "Hémoglobine A1C",
-        "Hemoglobin A1C",
-        "Microalbumine",
-        "Taille",
-        "Height",
-        "Poids",
-        "Weight",
-        "Fumeur",
-        "Smoker",
-        "Anormal",
-        "Abnormal",
-        "Cholestérol",
-        "Cholesterol",
-        "Vertige",
-        "Dizziness",
-        "Rechute",
-        "relapse",
-        "Réaction",
-        "reaction",
-        "Anticorps",
-        "Antibodies");
+
+    String[][] triggers = {
+        { "Anticorps", " Antibodies" },
+        { "Anormal", "Anormale", "abnormal" },
+        { "Cholestérol", "Cholesterol" },
+        { "Fumeur", "fume", "Smoker", "smoke" },
+        { "Hémoglobine A1C", "Hemoglobin A1C" },
+        { "Microalbumine" },
+        { "Poids", "Weight" },
+        { "Réaction", "Reaction" },
+        { "Rechute", "relapse" },
+        { "Taille", "Height" },
+        { "Vertige", "Dizziness" }
+    };
+
     String noteToStream = notes.stream()
         .map(Note::getNote)
         .map(String::trim)
         .collect(Collectors.joining(" "));
     System.out.println("noteToStream : " + noteToStream);
 
-    for (String triggerWord : triggerWords) {
-      if (noteToStream.toLowerCase().contains(triggerWord.toLowerCase())) {
-        System.out.println("triggerWord : " + triggerWord);
-        triggerCount++;
+
+    for (int i = 0; i < triggers.length; i++) {
+      for (int j = 0; j < triggers[i].length; j++) {
+        if (noteToStream.toLowerCase().contains(triggers[i][j].toLowerCase())) {
+          System.out.println("Trigger : " + triggers[i][j]);
+          triggerCount++;
+          break;
+        }
       }
     }
+    ;
+
     return triggerCount;
   }
 

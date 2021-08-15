@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TriggerServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mediscreen-report</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.service</a> &gt; <span class="el_source">TriggerServiceImpl.java</span></div><h1>TriggerServiceImpl.java</h1><pre class="source lang-java linenums">package com.mediscreen.service;
 
 import com.mediscreen.model.Note;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-<span class="fc" id="L10">public class TriggerServiceImpl implements TriggerService {</span>
+<span class="fc" id="L9">public class TriggerServiceImpl implements TriggerService {</span>
 
   /**
    * Count the trigger number in all notes
@@ -17,42 +16,53 @@ import org.springframework.stereotype.Service;
    */
   @Override
   public int countTrigger(List&lt;Note&gt; notes) {
-<span class="fc" id="L20">    int triggerCount = 0;</span>
-<span class="fc" id="L21">    List&lt;String&gt; triggerWords = Arrays.asList(</span>
-<span class="fc" id="L22">        &quot;Hémoglobine A1C&quot;,</span>
-<span class="fc" id="L23">        &quot;Hemoglobin A1C&quot;,</span>
-<span class="fc" id="L24">        &quot;Microalbumine&quot;,</span>
-<span class="fc" id="L25">        &quot;Taille&quot;,</span>
-<span class="fc" id="L26">        &quot;Height&quot;,</span>
-<span class="fc" id="L27">        &quot;Poids&quot;,</span>
-<span class="fc" id="L28">        &quot;Weight&quot;,</span>
-<span class="fc" id="L29">        &quot;Fumeur&quot;,</span>
-<span class="fc" id="L30">        &quot;Smoker&quot;,</span>
-<span class="fc" id="L31">        &quot;Anormal&quot;,</span>
-<span class="fc" id="L32">        &quot;Abnormal&quot;,</span>
-<span class="fc" id="L33">        &quot;Cholestérol&quot;,</span>
-<span class="fc" id="L34">        &quot;Cholesterol&quot;,</span>
-<span class="fc" id="L35">        &quot;Vertige&quot;,</span>
-<span class="fc" id="L36">        &quot;Dizziness&quot;,</span>
-<span class="fc" id="L37">        &quot;Rechute&quot;,</span>
-<span class="fc" id="L38">        &quot;relapse&quot;,</span>
-<span class="fc" id="L39">        &quot;Réaction&quot;,</span>
-<span class="fc" id="L40">        &quot;reaction&quot;,</span>
-<span class="fc" id="L41">        &quot;Anticorps&quot;,</span>
-<span class="fc" id="L42">        &quot;Antibodies&quot;);</span>
-<span class="fc" id="L43">    String noteToStream = notes.stream()</span>
-<span class="fc" id="L44">        .map(Note::getNote)</span>
-<span class="fc" id="L45">        .map(String::trim)</span>
-<span class="fc" id="L46">        .collect(Collectors.joining(&quot; &quot;));</span>
-<span class="fc" id="L47">    System.out.println(&quot;noteToStream : &quot; + noteToStream);</span>
+<span class="fc" id="L19">    int triggerCount = 0;</span>
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">    for (String triggerWord : triggerWords) {</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">      if (noteToStream.toLowerCase().contains(triggerWord.toLowerCase())) {</span>
-<span class="fc" id="L51">        System.out.println(&quot;triggerWord : &quot; + triggerWord);</span>
-<span class="fc" id="L52">        triggerCount++;</span>
+<span class="fc" id="L21">    String[][] triggers = {</span>
+<span class="fc" id="L22">        { &quot;Anticorps&quot;, &quot; Antibodies&quot; },</span>
+<span class="fc" id="L23">        { &quot;Anormal&quot;, &quot;Anormale&quot;, &quot;abnormal&quot; },</span>
+<span class="fc" id="L24">        { &quot;Cholestérol&quot;, &quot;Cholesterol&quot; },</span>
+<span class="fc" id="L25">        { &quot;Fumeur&quot;, &quot;fume&quot;, &quot;Smoker&quot;, &quot;smoke&quot; },</span>
+<span class="fc" id="L26">        { &quot;Hémoglobine A1C&quot;, &quot;Hemoglobin A1C&quot; },</span>
+<span class="fc" id="L27">        { &quot;Microalbumine&quot; },</span>
+<span class="fc" id="L28">        { &quot;Poids&quot;, &quot;Weight&quot; },</span>
+<span class="fc" id="L29">        { &quot;Réaction&quot;, &quot;Reaction&quot; },</span>
+<span class="fc" id="L30">        { &quot;Rechute&quot;, &quot;relapse&quot; },</span>
+<span class="fc" id="L31">        { &quot;Taille&quot;, &quot;Height&quot; },</span>
+<span class="fc" id="L32">        { &quot;Vertige&quot;, &quot;Dizziness&quot; }</span>
+    };
+    /*
+     * List&lt;String&gt; triggerWords = Arrays.asList( &quot;Anticorps&quot;, &quot;Antibodies&quot;,
+     * &quot;Hémoglobine A1C&quot;, &quot;Hemoglobin A1C&quot;, &quot;Microalbumine&quot;, &quot;Taille&quot;, &quot;Height&quot;,
+     * &quot;Poids&quot;, &quot;Weight&quot;, &quot;Fume&quot;, &quot;Smoker&quot;, &quot;Anormal&quot;, &quot;Abnormal&quot;, &quot;Cholestérol&quot;,
+     * &quot;Cholesterol&quot;, &quot;Vertige&quot;, &quot;Dizziness&quot;, &quot;Rechute&quot;, &quot;relapse&quot;, &quot;Réaction&quot;,
+     * &quot;reaction&quot;);
+     */
+
+<span class="fc" id="L42">    String noteToStream = notes.stream()</span>
+<span class="fc" id="L43">        .map(Note::getNote)</span>
+<span class="fc" id="L44">        .map(String::trim)</span>
+<span class="fc" id="L45">        .collect(Collectors.joining(&quot; &quot;));</span>
+<span class="fc" id="L46">    System.out.println(&quot;noteToStream : &quot; + noteToStream);</span>
+
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">    for (int i = 0; i &lt; triggers.length; i++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">      for (int j = 0; j &lt; triggers[i].length; j++) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (noteToStream.toLowerCase().contains(triggers[i][j].toLowerCase())) {</span>
+<span class="fc" id="L52">          System.out.println(&quot;trig[i][j] : &quot; + triggers[i][j]);</span>
+<span class="fc" id="L53">          triggerCount++;</span>
+<span class="fc" id="L54">          break;</span>
+        }
       }
     }
-<span class="fc" id="L55">    return triggerCount;</span>
+    ;
+    /*
+     * for (String triggerWord : triggerWords) { if
+     * (noteToStream.toLowerCase().contains(triggerWord.toLowerCase())) {
+     * System.out.println(&quot;triggerWord : &quot; + triggerWord); triggerCount++; } }
+     */
+
+<span class="fc" id="L65">    return triggerCount;</span>
   }
 
 }
