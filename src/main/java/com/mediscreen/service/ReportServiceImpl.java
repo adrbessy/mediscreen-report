@@ -1,5 +1,7 @@
 package com.mediscreen.service;
 
+import com.mediscreen.constants.Age;
+import com.mediscreen.constants.TriggerCount;
 import com.mediscreen.model.Note;
 import com.mediscreen.model.Patient;
 import com.mediscreen.proxies.MicroserviceNoteProxy;
@@ -60,36 +62,36 @@ public class ReportServiceImpl implements ReportService {
     logger.debug("in the method createReport in the class ReportServiceImpl");
     String riskLevel = "None";
 
-    if (age < 30) {
+    if (age < Age.LIMIT) {
 
       if (sex.equals("M")) {
-        if (triggerCount >= 3) {
+        if (triggerCount >= TriggerCount.INFERIOR_AGE_LIMIT_MALE_IN_DANGER) {
           riskLevel = "In Danger";
         }
-        if (triggerCount >= 5) {
+        if (triggerCount >= TriggerCount.INFERIOR_AGE_LIMIT_MALE_EARLY_ONSET) {
           riskLevel = "Early onset";
         }
       }
 
       if (sex.equals("F")) {
-        if (triggerCount >= 4) {
+        if (triggerCount >= TriggerCount.INFERIOR_AGE_LIMIT_FEMALE_IN_DANGER) {
           riskLevel = "In Danger";
         }
-        if (triggerCount >= 7) {
+        if (triggerCount >= TriggerCount.INFERIOR_AGE_LIMIT_FEMALE_EARLY_ONSET) {
           riskLevel = "Early onset";
         }
       }
 
     }
 
-    if (age >= 30) {
-      if (triggerCount >= 2) {
+    if (age >= Age.LIMIT) {
+      if (triggerCount >= TriggerCount.SUPERIOR_AGE_LIMIT_BORDERLINE) {
         riskLevel = "Borderline";
       }
-      if (triggerCount >= 6) {
+      if (triggerCount >= TriggerCount.SUPERIOR_AGE_LIMIT_IN_DANGER) {
         riskLevel = "In Danger";
       }
-      if (triggerCount >= 8) {
+      if (triggerCount >= TriggerCount.SUPERIOR_AGE_LIMIT_EARLY_ONSET) {
         riskLevel = "Early onset";
       }
     }
