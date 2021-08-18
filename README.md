@@ -140,3 +140,5 @@ To run the tests from maven, go to the folder that contains the pom.xml file and
 mvn test
 ```
 
+### UT jacoco coverage
+![Alt text](doc/UT-jacoco-coverage.png?raw=true "Couverture Jacoco de Tests Unitaires")
